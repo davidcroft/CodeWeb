@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+{% block header %}
+    {% include 'header.html' %}
+{% endblock%}
+
+{% block body %}
+<div class="container" style="margin-top:30px; margin-bottom:30px;">
+	<div class="row" style="margin-right:2px;">
+    	<a href="{% url 'index' %}#NewsEvents"><p class="text-right">Return</p></a>
+	</div>
+    <div class="row">
+        {% if newsPost.picture %}
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <img src="{% cropped_thumbnail newsPost cropPicture %}" width="100%"/>
+            </div>
+        {% endif %}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:20px; padding-left:15px;">
+            <h2 class="featurette-heading" style="margin-top:0px;">{{ newsPost.topic }}</h2>
+            <p>{{ newsPost.description }}</p>
+        </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

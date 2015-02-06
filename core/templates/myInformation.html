@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> Change My Account Information </b>
+        </p>
+        <form enctype="multipart/form-data" method="post" action="{% url 'myInformation' %}" class="ink-form">
+            <br>
+            <table>
+                {% for field in form.visible_fields %}
+                    <tr>
+                        <td><b>{{ field.label_tag }}</b></td>
+                        <td>{{ field }}</td>
+                        <td><span style="color:red">{{ field.errors }}</span></td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <p>
+                <input type="submit" class="ink-button" value="Save my changes">
+            </p>
+            {% for field in form.hidden_fields %}
+                {{field}}
+            {% endfor %}
+            {% csrf_token %}
+        </form>
+
+        <p>
+            <a href="{% url 'myAccount' %}"><button class="ink-button"> Go back to My Account </button></a>
+        </p>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> My Projects </b>
+        </p>
+        <p>
+                <a href="{% url 'myAccount' %}"><button class="ink-button"> My Account </button></a>
+                <a href="{% url 'addProject' %}"><button class="ink-button"> Add New Project </button></a>
+        </p>
+        <p>
+            <ul>
+            {% for project in projects reversed %}
+                <li> <a href="{% url 'seeProject' project.id %}"> Topic : {{ project.topic }} </a></li>
+            {% endfor %}
+        </p>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top:40px; margin-bottom:15px;">
+        <h3>Idea Forum</h3>
+    </div>
+    
+    {% for post in posts reversed %}
+    <div class="row panel panel-default" style="margin-bottom:30px;">
+        <div class="panel-body">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px;">
+                <div class="col-lg-1 col-md-1 col-sm-4 col-xs-4" style="padding-top:10px;">
+                    {% if post.userProfile.picture %}
+                        <img src="{% cropped_thumbnail post.userProfile cropPicture %}" width="100%"/>
+                    {% else %}
+                        <img src="/static/icon/default_profile_icon.jpg" width="100%"/>
+                    {% endif %}
+                </div>
+                <div class="col-lg-11 col-md-11 col-sm-8 col-xs-8" style="padding-top:10px; padding-left:0px;">
+                    <p><b>{{ post.userProfile.user.first_name }} {{ post.userProfile.user.last_name }}</b> @ {{ post.dateTime|date:'Y-m-d' }}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                {% if post.picture %}
+                    <img src="{% url 'getPostPicture' post.id %}" alt="" width="100%">
+                {% endif %}
+            </div>
+        
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                <h3>{{ post.topic }}</p>
+                <p>{{ post.description }}</p>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                <h4><a href="{% url 'likepost' post.id %}"><span class="label label-primary"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;{{post.likes}}</a></span></a></h4>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            {% for comment in comments %}
+                {% if comment.post.id == post.id %}
+                    <div class="row" style="margin-left:0px; margin-right:0px;">
+                        <div class="col-lg-1 col-md-1 col-sm-4 col-xs-4" style="padding-top:10px;">
+                            {% if comment.userProfile.picture %}
+                                <img src="{% cropped_thumbnail comment.userProfile cropPicture %}" width="100%"/>
+                            {% else %}
+                                <img src="/static/icon/default_profile_icon.jpg" width="100%"/>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-8 col-xs-8" style="padding-top:10px; padding-left:0px;">
+                            <p style="margin-bottom:0px;"><b>{{comment.userProfile.user.first_name}} {{ comment.userProfile.user.last_name }}</b> @ {{comment.dateTime|date:'Y-m-d'}}</p>
+                            {% if comment.userProfile.user == user %}
+                                <a href="{% url 'deleteForumComment' comment.id %}" style="font-size:10px; margin-top:0px; color:red">- delete</a>
+                            {% endif %}
+                            <p>{{comment.description}}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="row" style="margin-left:15px; margin-right:15px; margin-top:10px; margin-bottom:15px;">
+                <form enctype="multipart/form-data" action="{% url 'addcomment' post.id%}" method="post" class="form-inline" role="form">
+                    <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10" style="padding-left:0px;">
+                        <textarea rows="1" cols="106" id="description" name="description" class="form-control" placeholder="Write a comment ..." required></textarea>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2" style="padding-left:0px; padding-right:0px;">
+                        <input type="submit" class="btn btn-success btn-block" name="ideaForumSubmit" value="Comment" style="width=50px;">
+                    </div>
+                    {% csrf_token %} 
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

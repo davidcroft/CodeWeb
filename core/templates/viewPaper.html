@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> View paper </b>
+        </p>
+        <p>
+            <br>
+            <p>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <table>
+                        <tr>
+                            <td> <b> Topic </b> </td>
+                            <td>{{ paper.topic }}</td>
+                        </tr>
+                        <tr>
+                            <td> <b> Link </b></td>
+                            <td> <img src="{% url 'getPaperFile' paper.id %}" alt="" width=100%></td>
+                        </tr>
+                        <tr>
+                            <td> <b> Author </b> </td>
+                            <td>{{ paper.author }}</td>
+                        </tr>
+                        <tr>
+                            <td> <b> Time Created </b> </td>
+                            <td>{{ paper.dateTime }}</td>
+                        </tr>
+                    </table>
+                    <a class="icon-link" href="{% url 'deletePaper' paper.id %}"><h5><span class="label label-default"><span class="glyphicon glyphicon-plus"></span>&nbsp;Delete</span></h5></a>
+                </div>
+            </div>
+            </p>
+        </p>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

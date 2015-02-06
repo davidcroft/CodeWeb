@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-bottom:30px;">
+        <div class="row" style="padding-top:20px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+                <h3 id="Projects">Projects</h3>
+
+                    {% for project in projects %}
+                        <p hidden>{% cycle 1 2 3 4 as row_index %}</p>
+                        {% if row_index == 1 %}
+                            <div class="row" style="margin-top:15px; margin-bottom:15px;">
+                        {% endif %}
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <a class="thumbnail img-rounded" href="{% url 'publicSeeProject' project.id %}" style="margin-bottom:0px;"><img src="{% cropped_thumbnail project cropPicture %}" alt="" width=100%></a>
+                                <a href="{% url 'publicSeeProject' project.id %}"><p>{{ project.topic }}</p></a>
+                            </div>
+                        {% if row_index == 4 %}
+                            </div>
+                        {% endif %} 
+                    {% endfor %}
+                    {% if not projects|length|divisibleby:4 %}
+                        </div>
+                    {% endif %}
+            </div>
+        </div>
+
+        <div class="row" style="padding-top:20px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+                <h3 id="Papers">Papers</h3>
+            </div>
+            <div class="row">
+                {% for paper in papers %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-1 col-md-1 col-sm-3 col-xs-3" style="padding-top:10px;">
+                            <a href="{% url 'viewPaper' paper.id %}"><img src="static/icon/pdf_icon.png" width="100%"/></a>
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-9 col-xs-9" style="padding-left:0px;">
+                            <a href="{% url 'viewPaper' paper.id %}"><h4 style="margin-bottom:0px;"> {{ paper.topic }} </h4></a>
+                            <p>{{ paper.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

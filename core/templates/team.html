@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+            <h3>Faculty</h3>
+            {% for profile in faculty %}
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <a href="{{ profile.website }}">
+                            {% if profile.picture %}
+                                <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% else %}
+                                <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <h4 style="margin-top: 0px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+                        <p>
+                        {% if profile.website %}
+                            <a href="{{ profile.website }}">{{ profile.website }}</a> | 
+                        {% endif %}
+                        
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> | 
+                        {% endif %}
+
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% endif %}
+                        </p>
+                        <p>{{ profile.bio }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+            <h3>Phd Candidates</h3>
+            {% for profile in phd %}
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <a href="{{ profile.website }}">
+                            {% if profile.picture %}
+                                <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% else %}
+                                <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <h4 style="margin-top: 0px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+                        <p>
+                        {% if profile.website %}
+                            <a href="{{ profile.website }}">{{ profile.website }}</a> | 
+                        {% endif %}
+                        
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> | 
+                        {% endif %}
+
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% endif %}
+                        </p>
+                        <p>{{ profile.bio }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+            <h3>Master Candidates</h3>
+            {% for profile in master %}
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <a href="{{ profile.website }}">
+                            {% if profile.picture %}
+                                <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% else %}
+                                <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <h4 style="margin-top: 0px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+                        <p>
+                        {% if profile.website %}
+                            <a href="{{ profile.website }}">{{ profile.website }}</a> | 
+                        {% endif %}
+                        
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> | 
+                        {% endif %}
+
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% endif %}
+                        </p>
+                        <p style="word-wrap: break-word">{{ profile.bio }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+            <h3>Visitors</h3>
+            {% for profile in visitor %}
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <a href="{{ profile.website }}">
+                            {% if profile.picture %}
+                                <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% else %}
+                                <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="padding-top:20px;">
+                        <h4 style="margin-top: 0px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+                        <p>
+                        {% if profile.website %}
+                            <a href="{{ profile.website }}">{{ profile.website }}</a> | 
+                        {% endif %}
+                        
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a> | 
+                        {% endif %}
+
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% endif %}
+                        </p>
+                        <p>{{ profile.bio }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:20px; margin-bottom:50px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;">
+            <h3>Alumni</h3>
+            <div class="row">
+            {% for profile in alumni %}
+                    <div class="col-lg-1 col-md-1 col-sm-4 col-xs-4" style="padding-top:20px; padding-right:0px;">
+                        <a href="{{ profile.website }}">
+                            {% if profile.picture %}
+                                <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% else %}
+                                <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-8 col-xs-8" style="padding-top:20px;">
+                        <h4 style="margin-top: 0px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+                        <p style="font-size:11px;">
+                        {% if profile.website %}
+                            <a href="{{ profile.website }}">{{ profile.website }}</a></br>
+                        {% endif %}
+                        
+                        {% if profile.email %}
+                            <a href="mailto:{{ profile.email }}">{{ profile.email }}</a></br>
+                        {% endif %}
+
+                        {% if profile.phone %}
+                            {{ profile.phone }}
+                        {% endif %}
+                        </p>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

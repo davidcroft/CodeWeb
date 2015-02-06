@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> My Papers </b>
+        </p>
+        <p>
+                <a href="{% url 'myAccount' %}"><button class="ink-button"> My Account </button></a>
+                <a href="{% url 'addPaper' %}"><button class="ink-button"> Add New Paper </button></a>
+        </p>
+        <p>
+            <ul>
+            {% for paper in papers reversed %}
+                <li> <a href="{% url 'viewPaper' paper.id %}"> Topic : {{ paper.topic }} </a></li>
+            {% endfor %}
+        </p>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

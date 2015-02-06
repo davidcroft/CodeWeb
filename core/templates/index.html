@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+
+{% block header %}
+    {% include 'header.html' %}
+    <script type="text/javascript" src="/static/javascript/jquery.jcarousel.min.js"></script>
+    <script type="text/javascript" src="/static/javascript/jcarousel.responsive.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/jcarousel.responsive.css">
+{% endblock%}
+
+{% block body %}
+    <div class="row home-slideshow">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div id="homepage-slideshow" class="carousel slide" data-ride="carousel">
+          <!-- Indicators 
+          <ol class="carousel-indicators">
+            <li data-target="#homepage-slideshow" data-slide-to="0" class="active"></li>
+            <li data-target="#homepage-slideshow" data-slide-to="1"></li>
+            <li data-target="#homepage-slideshow" data-slide-to="2"></li>
+          </ol>-->
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            {% for slide in slides %}
+              {% if forloop.counter == 1 %}
+                <div class="item active">
+              {% else %}
+                <div class="item">
+              {% endif %}
+                <img src="{% cropped_thumbnail slide cropPicture %}" alt="" width="100%">
+                <div class="carousel-caption">
+                  <p> {{ slide.description }} </p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          <!-- Controls -->
+          <a class="left carousel-control" href="#homepage-slideshow" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <a class="right carousel-control" href="#homepage-slideshow" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  <div class="container" style="margin-bottom:50px;" id="NewsEvents">
+    <div class="row" style="margin-bottom:10px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:20px;"><h3>News & Events</h3></div>
+    </div>
+    {% if news|length <= 3 %}
+        <div class="row">
+            {% for post in news %}
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                {% if post.picture %}
+                <a href="{% url 'publicSeeNewsPost' post.id %}" class="thumbnail img-rounded">
+                  <img src="{% cropped_thumbnail post cropPicture %}" alt="" width="100%"/>
+                </a>
+                {% endif %}
+                <h4>{{ post.topic }}</h4>
+                <p style="text-align: justify">
+                  {{ post.description|truncatewords:50 }}
+                  {% if post.description|wordcount > 50 %}
+                    <a href="{% url 'publicSeeNewsPost' post.id %}">More</a>
+                  {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="row jcarousel-wrapper">
+            <div class="jcarousel">
+                <ul>
+                    {% for post in news %}
+                    <li>
+                        <a href="{% url 'publicSeeNewsPost' post.id %}" class="thumbnail img-rounded">
+                          <img src="{% cropped_thumbnail post cropPicture %}" alt="" width="100%">
+                        </a>
+                        <h4>{{ post.topic }}</h4>
+                        <p style="text-align: justify">
+                          {{ post.description|truncatewords:50 }}
+                          {% if post.description|wordcount > 50 %}
+                            <a href="{% url 'publicSeeNewsPost' post.id %}">More</a>
+                          {% endif %}
+                        </p>
+                    </li>
+                    {% endfor %}
+                </ul> 
+            </div>
+            <a href="#" class="jcarousel-control-prev">&lsaquo;</a>
+            <a href="#" class="jcarousel-control-next">&rsaquo;</a>
+        </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+{% block head %}
+    {{ profileForm.media }}
+{% endblock %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-top:20px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px;">
+                {% if profile.picture %}
+                    <img src="{% cropped_thumbnail profile cropPicture %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                {% else %}
+                    <img src="static/icon/default_profile_icon.jpg" width="100%" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px; padding-top:80px;">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-sidebar" id="sidebar">
+              <li class="active"><a href="{% url 'myAccount' %}#Profile">Profile</a></li>
+              <li><a href="{% url 'myAccount' %}#Projects">Projects</a></li>
+              <li><a href="{% url 'myAccount' %}#Papers">Papers</a></li>
+              <li><a href="{% url 'myAccount' %}#Posts">Posts</a></li>
+              <li><a href="{% url 'ideaforum' %}">Ideas Forum</a></li>                                
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 two-col-right-panel">
+        <div class="row" id="Profile" style="margin-bottom:30px;">
+
+            <form enctype="multipart/form-data" action="{% url 'editProfile' %}" method="post" class="form-horizontal" role="form">
+                
+                <div class="form-group" style="vertical-align:text-bottom;">
+                    <div class="col-md-6">
+                        <label for="id_picture" style="text-align:left">Photo: </label>
+                        {{ profileForm.picture.errors }}
+                        {{ profileForm.picture }}
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-left:0px;">
+                            <input type="submit" name="upload" value="Crop" class="btn btn-success btn-block" style="margin-top:15px;"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="id_cropPicture" style="text-align:left">Cropping: </label>
+                        {{ profileForm.cropPicture.errors }}
+                        {{ profileForm.cropPicture }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="firstName">First Name: </label>
+                        <input type="text" name="firstName" class="form-control" value="{{ profile.user.first_name }}">
+                    </div>
+                        
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="degree">Degree: </label>
+                        <select class="form-control" id="degree" name="degree">
+                            {% if not profile.degree %}
+                            <option value="" disabled="disabled" selected="selected">Please select</option>
+                            {% else %}
+                            <option value="" disabled="disabled">Please select</option>
+                            {% endif %}
+                            
+                            {% if profile.degree == "Faculty" %}
+                            <option value="Faculty" selected="selected">Faculty</option>
+                            {% else %}
+                            <option value="Faculty">Faculty</option>
+                            {% endif %}
+
+                            {% if profile.degree == "Phd" %}
+                            <option value="Phd" selected="selected">Phd</option>
+                            {% else %}
+                            <option value="Phd">Phd</option>
+                            {% endif %}
+
+                            {% if profile.degree == "Master" %}
+                            <option value="Master" selected="selected">Master</option>
+                            {% else %}
+                            <option value="Master">Master</option>
+                            {% endif %}
+
+                            {% if profile.degree == "Visitor" %}
+                            <option value="Visitor" selected="selected">Visitor</option>
+                            {% else %}
+                            <option value="Visitor">Visitor</option>
+                            {% endif %}
+
+                            {% if profile.degree == "Alumni" %}
+                            <option value="Alumni" selected="selected">Alumni</option>
+                            {% else %}
+                            <option value="Alumni">Alumni</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="lastName">Last Name: </label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" value="{{ profile.user.last_name }}">
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="email">Email: </label>
+                        <input type="text" id="email" name="email" class="form-control" value="{{ profile.email }}">
+                    </div> 
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="website">Website: </label>
+                        <input type="text" id="website" name="website" class="form-control" value="{{ profile.website }}" placeholder="http://">
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="phone">Phone: </label>
+                        <input type="text" id="phone" name="phone" class="form-control" value="{{ profile.phone }}">
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="bio">Bio: </label>
+                        <textarea class="form-control" rows="4" name="bio" placeholder="Say something about yourself">{{ profile.bio }}</textarea>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 hr-profile">
+                        <hr style="margin:0px;height:1px;border:0px;background-color:#D5D5D5;color:#D5D5D5;"/>
+                    </div>
+                </div> <!-- Group form -->
+
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                        <label for="changePwdOld">Password: </label>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <input type="password" id="changePwdOld" name="passwordOld" class="form-control" placeholder="Original password" style="margin-bottom:10px;">
+                        {% if passwordOldError %}
+                            <p class="error-hint"> {{ passwordOldError }}</p>
+                        {% endif %}
+                        <input type="password" id="changePwdNew" name="passwordNew" class="form-control" placeholder="New password" style="margin-bottom:10px;">
+                        {% if passwordNewError %}
+                            <p class="error-hint"> {{ passwordNewError }}</p>
+                        {% endif %}
+                        <input type="password" id="changePwdConfirm" name="passwordNewConfirm" class="form-control" placeholder="Confrim new password" style="margin-bottom:10px;">
+                        {% if passwordNewError %}
+                            <p class="error-hint"> {{ passwordNewError }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 hr-profile">
+                        <hr style="margin:0px;height:1px;border:0px;background-color:#D5D5D5;color:#D5D5D5;"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px; padding-left:15px;">
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-left:0px;">
+                            <input type="submit" name="add" value="Update" class="btn btn-success btn-block"/>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-left:0px;">
+                            <a href="{% url 'myAccount' %}" class="icon-link"><input type="button" class="btn btn-primary btn-block" value="Cancel" /></a>
+                        </div>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

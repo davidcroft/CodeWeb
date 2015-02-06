@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+{% block head %}
+    {{ form_project.media }}
+{% endblock %}
+
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-top:20px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px;">
+                <a href="{% url 'editProfile' %}" class="thumbnail img-rounded" style="margin-bottom: 10px;">
+                    {% if profile.picture %}
+                        <img src="{% cropped_thumbnail profile cropPicture %}" width="100%"/>
+                    {% else %}
+                        <img src="/static/icon/default_profile_icon.jpg" width="100%"/>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px; padding-top:80px;">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-sidebar" id="sidebar">
+              <li><a href="{% url 'myAccount' %}#Profile">Profile</a></li>
+              <li class="active"><a  href="{% url 'myAccount' %}#Projects">Projects</a></li>
+              <li><a href="{% url 'myAccount' %}#Papers">Papers</a></li>
+              <li><a  href="{% url 'myAccount' %}#Posts">Posts</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" style="padding-top:20px; padding-left:40px;">
+        <div class="row" style="margin-bottom:15px;">
+            <h2 style="padding-left:0px;">Add a new project</h2>
+        </div>
+        <div class="row" style="padding-left:15px;">
+            <form enctype="multipart/form-data" method="post" action="{% url 'addImgProject' project.id %}" class="">
+                <div class="row" style="margin-bottom:15px;">
+                        <label for="id_topic">Topic:</label>
+                        <input id="id_topic" maxlength="200" name="topic" type="text" class="form-control"/ value="{{ project.topic }}" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px; padding-left:0px;">
+                        <label for="id_picture">Thumbnail:</label>
+                        <!--input id="id_picture" name="picture" type="file"/ value="{{ project.picture }}"-->
+                        {{ form_project.picture }}
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:15px; padding-left:0px;">
+                        <label for="id_cropPicture">Crop:</label>
+                        <!--input id="id_cropPicture" name="cropPicture" type="file"/ value="{{ project.cropPicture }}"-->
+                        {{ form_project.cropPicture }}
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <input type="hidden" value="{{ formset|length }}" id="itemsNum">
+                    <input id="id_form-TOTAL_FORMS" name="form-TOTAL_FORMS" type="hidden" value="{{ formset|length }}" /><input id="id_form-INITIAL_FORMS" name="form-INITIAL_FORMS" type="hidden" value="0" /><input id="id_form-MAX_NUM_FORMS" name="form-MAX_NUM_FORMS" type="hidden" value="1000" />
+                    {{ formset.management_form }}
+                </div>
+
+                <div class="row" style="margin-bottom:15px;">
+                    <h4>Add items to project</h4>
+                </div>
+
+                {% for itemForm in formset %}
+                <div class="row">
+                    <div class="table" style="margin-bottom:15px;">
+                        <table width="100%">
+                            <tr>
+                                <td width="100%" style="padding-left:0px; padding-top:0px;"> {{itemForm.itemType }} </td>
+                            </tr>
+                            <tr style="display: none;">
+                                <td style="padding-left:0px; padding-top:0px;"> {{itemForm.text }} </td>
+                            </tr>
+                            <tr style="display: none;">
+                                <td style="padding-left:0px; padding-top:0px;"> {{itemForm.image }} </td>
+                            </tr>
+                            <tr style="display: none;">
+                                <td style="padding-left:0px;  padding-top:0px;"> {{itemForm.video }} </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-top:0px; padding-left:0px;">
+                        <input type="button" value="+ Add" id="add_item" class="btn btn-success btn-block btn-xs"/>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-top:0px; padding-left:0px;">
+                        <input type="button" value="- Remove" id="remove_item" class="btn btn-warning btn-block btn-xs"/>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:15px; margin-bottom:30px;">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-top:10px; padding-left:0px;">
+                        <input type="submit" class="btn btn-success btn-block" value="Create" style="width=50px;">
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-top:10px; padding-left:0px;">
+                        <a href="{% url 'deleteProject' project.id %}"><button type="button" class="btn btn-primary btn-block">Cancel</button></a>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+</div>
+        <script>
+            $(document).ready(function() {
+                var numForms = $('#itemsNum').val();
+                
+                $('#add_item').click(function() {
+                    addItemForm('div.table:last');
+                    numForms++
+                });  
+                $('#remove_item').click(function() {
+                    if ($('div.table').length > 1) {
+                        removeItemForm('div.table:last');
+                        numForms--
+                    }
+                });
+
+                $(':regex(id, id_form-[0-9]-itemType)').change(function() {
+                    var id = $(':regex(id, id_form-[0-9]-itemType)').index(this);
+                    if ($(this).val() == 'text') {
+                        $('div.table tr').eq(4*id+1).css("display", "inline");
+                        $('div.table tr').eq(4*id+2).css("display", "none");
+                        $('div.table tr').eq(4*id+3).css("display", "none");
+                    }
+                    if ($(this).val() == 'image') {
+                        $('div.table tr').eq(4*id+1).css("display", "none");
+                        $('div.table tr').eq(4*id+2).css("display", "inline");
+                        $('div.table tr').eq(4*id+3).css("display", "none");
+                    }
+                    if ($(this).val() == 'video') {
+                        $('div.table tr').eq(4*id+1).css("display", "none");
+                        $('div.table tr').eq(4*id+2).css("display", "none");
+                        $('div.table tr').eq(4*id+3).css("display", "inline");
+                    }
+                });
+                
+                $('div.table tr').each(function(index) {
+                    if (index % 4 == 0) {
+                        if ($('#id_form-' + (index/4) + '-itemType').val() == 'text') {
+                            $('div.table tr').eq(index+1).css("display", "inline");
+                        }
+                        if ($('#id_form-' + (index/4) + '-itemType').val() == 'image') {
+                            $('div.table tr').eq(index+2).css("display", "inline");
+                        }
+                        if ($('#id_form-' + (index/4) + '-itemType').val() == 'video') {
+                            $('div.table tr').eq(index+3).css("display", "inline");
+                        }
+                    }
+                });
+                
+            });
+        </script>
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

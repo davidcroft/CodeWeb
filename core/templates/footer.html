@@ -1,0 +1,40 @@
+<footer id="footer">
+   	<div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 footer-line"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><p class="footer-title">Contact</p></div>
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
+                <p class="footer-title">Twitter</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"> <p class="footer-title">Login</p></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                <p class="footer-content">College of Fine Arts Building (CFA) 212</br>School of Architecture, CMU<br>Pittsburgh, PA, 15213, USA</p>
+                <p class="footer-content"><a href="mailto:info@code.arc.cmu.edu">info@code.arc.cmu.edu</a></p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                <p class="push-center footer-content">Computational Design Lab</br><a href="http://www.cmu.edu/architecture/">School of Architecture</a></br><a href="http://www.cmu.edu/">Carnegie Mellon University</a></p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-8 col-xs-8">
+                <p class="push-left footer-content">
+                    <a href="https://twitter.com/CMUsoarch">Arch@CMU</br>
+                    <a href="https://twitter.com/cmudesign">Design@CMU</br>
+                    <a href="https://twitter.com/SOA_CMU">Art@CMU</br>
+                </p>
+                <p class="push-left footer-content"><a href="{% url 'getTweets' %}">Recent tweets</a></p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                {% if user.is_superuser %}
+                    <p class="footer-content"><a href="{% url 'myAccount' %}"> Admin </a> / <a href="{% url 'logout' %}">Logout</a></p>
+                {% elif user.is_authenticated %}
+                    <p class="footer-content"><a href="{% url 'myAccount' %}"> {{ user.first_name }} </a> / <a href="{% url 'logout' %}">Logout</a></p>
+                {% else %}
+                    <p class="footer-content"><a href="{% url 'login' %}">Login</a> / <a href="{% url 'register'%}">Sign Up</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</footer>

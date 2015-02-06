@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> Add Items </b>
+        </p>
+        <form enctype="multipart/form-data" method="post" action="{% url 'addItems' project_id %}" class="">
+            {{ formset.management_form }}
+            {% for itemForm in formset %}
+            <div class="table">
+                <table>
+                    {{ itemForm.as_table }}
+                </table>
+            </div>
+            {% endfor %}
+            <p>
+                <input type="button" value="Add item" id="add_more">
+            </p>
+            <p>
+                <input type="submit" class="ink-button" value="Add content">
+            </p>
+            {% csrf_token %}
+        </form>
+        <p>
+            <a href="{% url 'myAccount' %}"><button class="ink-button"> Go back to My Account </button></a>
+        </p>
+        <script> 
+            $('#add_more').click(function() {
+                cloneMore('div.table:last')
+            });
+        </script>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

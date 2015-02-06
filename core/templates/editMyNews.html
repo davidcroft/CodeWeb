@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+{% block head %}
+    {{ news_form.media }}
+{% endblock %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-top:20px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px;">
+                <a href="{% url 'editAdminProfile' %}" class="thumbnail img-rounded" style="margin-bottom: 10px;"><img src="/static/icon/default_profile_icon.jpg" width="100%"/></a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px; padding-top:80px;">
+                <h4>Admin</h4>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-sidebar" id="sidebar">
+              <li><a href="{% url 'myAccount' %}#Slideshow">Slideshow</a></li>
+              <li class="active"><a href="{% url 'myAccount' %}#News">News</a></li>
+              <li><a href="{% url 'myAccount' %}#About">About</a></li>
+              <li><a href="{% url 'myAccount' %}#Admission">Admission</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 two-col-right-panel">
+        <div class="row" style="margin-bottom:30px;">
+            <h2 style="padding-left:15px;">Edit News Post</h2>
+        </div>
+        <div class="row" style="padding-left:15px;">
+            
+            <form enctype="multipart/form-data" action="{% url 'addNewsPost' news.id %}" method="post" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="id_picture" style="text-align:left">Picture:</label>
+                        {{ news_form.picture }}
+                        <label for="id_cropPicture" style="text-align:left">Picture crop:</label>
+                        {{ news_form.cropPicture }}
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0px;">
+                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-top:10px;">
+                            <input type="submit" name="upload" class="btn btn-success btn-block" style="width=50px;" value="Save"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="Topic" style="padding-left:0px;">Topic:</label>
+                        <textarea id="Topic" class="form-control" rows="1" name="topic">{{ news.topic }}</textarea>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:15px;">
+                        <label for="Description" style="padding-left:0px;">Description:</label>
+                        <textarea id="Description" class="form-control" rows="10" name="description" placeholder="Write the description here">{{ news.description }}</textarea>
+                    </div>
+                </div>
+    
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:0px;">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-top:10px;">
+                        <input type="submit" name="add" class="btn btn-success btn-block" style="width=50px;" value="Add"/>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-top:10px;">
+                        <a href="{% url 'deleteNewsPost' news.id %}"><button type="button" class="btn btn-primary btn-block">Cancel</button></a>
+                    </div>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

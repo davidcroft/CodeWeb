@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+    <br>
+        <p>
+            <b> My Posts </b>
+        </p>
+        <p>
+                <a href="{% url 'myAccount' %}"><button class="ink-button"> My Account </button></a>
+                <a href="{% url 'addPost' %}"><button class="ink-button">Post a new Idea </button></a>
+        </p>
+        <p>
+            <ul>
+            {% for post in posts reversed %}
+                <li> <a href="{% url 'viewPost' post.id %}"> Idea : {{ post.description }} </a></li>
+            {% endfor %}
+        </p>
+
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+

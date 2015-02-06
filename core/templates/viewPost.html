@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load cropping thumbnail %}
+
+
+{% block header %}
+    {% include "header.html" %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-top:20px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px;">
+                <a href="{% url 'editProfile' %}" class="thumbnail img-rounded" style="margin-bottom: 10px;">
+                    {% if profile.picture %}
+                        <img src="{% cropped_thumbnail profile cropPicture %}" width="100%"/>
+                    {% else %}
+                        <img src="/static/icon/default_profile_icon.jpg" width="100%"/>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="padding-left:0px; padding-top:80px;">
+                <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+            </div>
+        </div>
+        <div class="row">
+            <ul class="nav nav-sidebar" id="sidebar">
+              <li><a href="{% url 'myAccount' %}#Profile">Profile</a></li>
+              <li><a  href="{% url 'myAccount' %}#Projects">Projects</a></li>
+              <li><a href="{% url 'myAccount' %}#Papers">Papers</a></li>
+              <li class="active"><a  href="{% url 'myAccount' %}#Posts">Posts</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 panel panel-default" style="margin-top:20px; margin-left:15px;">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" style="padding-top:10px;">
+                <!--<a class="icon-link" href="#"><span class="label label-primary"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</span></a>-->
+                <a class="icon-link" href="{% url 'deletePost' post.id %}"><span class="label label-danger"><span class="glyphicon glyphicon-minus"></span>&nbsp;Delete</span></a>
+                <a class="icon-link" href="{% url 'ideaforum' %}"><span class="label label-info"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Forum</span></a>
+                <a class="icon-link" href="{% url 'myAccount' %}#Posts"><span class="label label-default"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Return</span></a>
+            </div>
+        </div>
+
+        <div class="row panel-body" style="padding-top:0px;">
+            <h3 style="padding-left:15px;">{{ post.topic }}</h3>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                <p>Time Created: {{ post.dateTime }}</p>
+                {% if post.picture %}
+                    <img src="{% url 'getPostPicture' post.id %}" class="thumbnail img-rounded" style="margin-bottom: 10px;" width="100%"/>
+                {% endif %}
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px;">
+                <p>{{ post.description }}</p>
+                <h4><span class="label label-primary"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;{{ post.likes }}</span></h4>
+            </div>
+        </div>
+
+        <div class="row panel-footer">
+            {% for comment in comments %}
+                {% if comment.post.id == post.id %}
+                    <div class="row" style="margin-left:0px; margin-right:0px;">
+                        <div class="col-lg-1 col-md-1 col-sm-4 col-xs-4" style="padding-top:10px; padding-right:0px;">
+                            {% if comment.userProfile.picture %}
+                                <img src="{% cropped_thumbnail comment.userProfile cropPicture %}" width="100%"/>
+                            {% else %}
+                                <img src="/static/icon/default_profile_icon.jpg" width="100%"/>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-11 col-md-11 col-sm-8 col-xs-8" style="padding-top:10px; padding-left:15px;">
+                            <p style="margin-top:0px; margin-bottom:0px;"><b>{{comment.userProfile.user.first_name}} {{ comment.userProfile.user.last_name }}</b> @ {{comment.dateTime|date:'Y-m-d'}}</p>
+                            {% if comment.userProfile.user == user %}
+                                <a href="{% url 'deleteComment' comment.id post.id %}" style="font-size:10px; margin-top:0px; color:red">- delete</a>
+                            {% endif %}
+                            <p>{{comment.description}}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="row" style="margin-left:15px; margin-right:15px; margin-top:10px; margin-bottom:15px;">
+                <form enctype="multipart/form-data" action="{% url 'addcomment' post.id%}" method="post" class="form-inline" role="form">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="padding-left:0px;">
+                        <textarea rows="1" cols="58" id="description" name="description" class="form-control" placeholder="Write a comment ..." required></textarea>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="padding-left:0px; padding-right:0px;">
+                        <input type="submit" class="btn btn-success btn-block" name="viewPostSubmit" value="Comment" style="width=50px;">
+                    </div>
+                    {% csrf_token %} 
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
+
